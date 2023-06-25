@@ -1,0 +1,30 @@
+{
+  "name": "fast-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "fast": "./bin/cli.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.0.0",
+    "commander": "^11.0.0",
+    "deepmerge": "^4.3.1",
+    "ejs": "^3.1.9",
+    "eslint": "^8.43.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "figlet": "^1.6.0",
+    "fs-extra": "^9.1.0",
+    "globby": "^13.2.0",
+    "inquirer": "^8.0.0",
+    "isbinaryfile": "^5.0.0",
+    "javascript-stringify": "^2.1.0"
+  }
+}
