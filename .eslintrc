@@ -1,7 +1,8 @@
-{
+{   
     "parserOptions": {
         "ecmaVersion": 2020
     },
+    "parser": "vue-eslint-parser",
     "env": {
         "es6": true
     },
@@ -14,11 +15,11 @@
             }
         }
     },
-    "extends": "airbnb-base",
+    "extends": ["airbnb-base"],
     "rules": {
         "no-console": "off",
         "array-element-newline": ["error", "consistent"],
-        "indent": ["error", 4, { "MemberExpression": 0, "SwitchCase": 1 }],
+        "indent": ["error", 2, { "MemberExpression": 0, "SwitchCase": 1 }],
         "quotes": ["error", "single", { "allowTemplateLiterals": true }],
         "comma-dangle": ["error", "always-multiline"],
         "semi": ["error", "always"],
