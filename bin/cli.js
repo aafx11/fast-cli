@@ -20,6 +20,7 @@ program
 .description('create a new project')
 // -f or --force 为强制创建，如果创建的目录存在则直接覆盖
 .option('-f, --force', 'overwrite target directory if it exist')
+.option('-p, --preset <presetName>', 'Skip prompts and use remote preset')
 .action((name, options) => {
   require('../lib/create.js')(name, options);
 });
