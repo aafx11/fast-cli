@@ -1,0 +1,45 @@
+{
+  "name": "vue2-project",
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "webpack-dev-server --config ./build/dev.config.js",
+    "build": "webpack --config ./build/pro.config.js",
+    "lint": "eslint --ext .js,.jsx,.vue src/"
+  },
+  "dependencies": {
+    "axios": "^1.4.0",
+    "core-js": "^3.8.3",
+    "vue": "^2.6.12",
+    "vue-router": "^3.5.1",
+    "vuex": "^3.6.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.13",
+    "@babel/preset-env": "^7.12.13",
+    "@babel/eslint-parser": "^7.18.2",
+    "babel-loader": "^8.2.2",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^5.0.2",
+    "eslint": "^7.20.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-loader": "^4.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-vue": "^7.6.0",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^4.5.1",
+    "style-loader": "^2.0.0",
+    "url-loader": "^4.1.1",
+    "vue-loader": "^15.9.6",
+    "vue-template-compiler": "^2.6.12",
+    "webpack": "^4.32.2",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.11.2",
+    "webpack-merge": "^4.2.1",
+    "webpackbar": "^4.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

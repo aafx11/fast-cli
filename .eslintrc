@@ -1,4 +1,4 @@
-{   
+{
     "parserOptions": {
         "ecmaVersion": 2020
     },
@@ -10,21 +10,54 @@
         "import/resolver": {
             "alias": {
                 "map": [
-                    ["@", "./src"]
+                    [
+                        "@",
+                        "./src"
+                    ]
                 ]
             }
         }
     },
-    "extends": ["airbnb-base"],
+    "extends": [
+        "airbnb-base"
+    ],
     "rules": {
         "no-console": "off",
-        "array-element-newline": ["error", "consistent"],
-        "indent": ["error", 2, { "MemberExpression": 0, "SwitchCase": 1 }],
-        "quotes": ["error", "single", { "allowTemplateLiterals": true }],
-        "comma-dangle": ["error", "always-multiline"],
-        "semi": ["error", "always"],
-        "object-curly-spacing": ["error", "always"],
-        "max-len": ["error", 140],
+        "array-element-newline": [
+            "error",
+            "consistent"
+        ],
+        "indent": [
+            "error",
+            2,
+            {
+                "MemberExpression": 0,
+                "SwitchCase": 1
+            }
+        ],
+        "quotes": [
+            "error",
+            "single",
+            {
+                "allowTemplateLiterals": true
+            }
+        ],
+        "comma-dangle": [
+            "error",
+            "always-multiline"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "object-curly-spacing": [
+            "error",
+            "always"
+        ],
+        "max-len": [
+            "error",
+            140
+        ],
         "no-new": "off",
         "linebreak-style": "off",
         "import/extensions": "off",
@@ -71,6 +104,7 @@
         "no-await-in-loop": "off",
         "class-methods-use-this": "off",
         "no-return-assign": "off",
-        "no-return-await": "off"
+        "no-return-await": "off",
+        "arrow-body-style": "off"
     }
 }

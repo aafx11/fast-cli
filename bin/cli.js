@@ -6,14 +6,7 @@ const chalk = require('chalk');
 // 生成logo
 const figlet = require('figlet');
 
-program
-.command('createByRemote <app-name>')
-.description('create a new project from remote repository')
-.option('-f, --force', 'overwrite target directory if it exist')
-.action((name, options) => {
-  require('../lib/createByRemote/create.js')(name, options);
-});
-
+// 创建项目命令
 program
 // 定义命令和参数
 .command('create <app-name>')
@@ -23,6 +16,17 @@ program
 .option('-p, --preset <presetName>', 'Skip prompts and use remote preset')
 .action((name, options) => {
   require('../lib/create.js')(name, options);
+});
+
+// 打开UI界面
+program
+// 定义命令和参数
+.command('ui')
+.description('start and open the fast-cli ui')
+.option('-H, --host <host>', 'Host used for the UI server (default: localhost)')
+.option('-p, --port <port>', 'Port used for the UI server (by default search for available port)')
+.action((options) => {
+  require('../lib/cli-ui/ui')(options);
 });
 
 program
