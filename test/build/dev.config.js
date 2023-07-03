@@ -8,22 +8,12 @@ module.exports = merge(base, {
   mode: 'development',
   devtool: 'inline-source-map',
   devServer: {
-    contentBase: resolve('../tempDist'),
+    contentBase: resolve('../dist'),
     hot: true,
     port: 8080,
-    proxy: {
-      '/': {
-        target: 'http://localhost:8088',
-        changeOrigin: true,
-        ws: false,
-        pathRewrite: {
-          '^/': '/'
-        }
-      }
-    },
   },
   output: {
     filename: '[name].bundle.js',
-    path: resolve('../tempDist'),
+    path: resolve('../dist'),
   },
 });
