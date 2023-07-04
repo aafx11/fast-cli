@@ -3,17 +3,19 @@
     <button @click="createProject">
       11
     </button>
-    <Modal />
+    <Modal title="提示">
+      <div>123</div>
+    </Modal>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
-import Modal from '../../components/Modal.vue';
+// import Modal from '../../components/Modal.vue';
 
 export default {
   name: 'ProjectCreate',
-  components: { Modal },
+  // components: { Modal },
   data() {
     return {
       // Modal
