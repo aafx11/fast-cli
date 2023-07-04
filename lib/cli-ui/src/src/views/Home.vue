@@ -1,6 +1,8 @@
 <template>
   <div class="home">
-      <router-link to="/project/create">create</router-link>
+    <router-link to="/project/create">
+      create
+    </router-link>
   </div>
 </template>
 
