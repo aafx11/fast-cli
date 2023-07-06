@@ -3,22 +3,25 @@
     <button @click="createProject">
       11
     </button>
-    <Modal title="提示">
-      <div>123</div>
-    </Modal>
+    <Maker-Modal v-show="showTipModal" title="提示" @close="closeTipModal">
+      <div>目标文件已存在,是否覆盖文件</div>
+      <div slot="footer" class="actions end">
+        <Maker-Button label="取消" @click="closeTipModal"></Maker-Button>
+        <Maker-Button label="覆盖" type="danger" @click="clickCoverBtn"></Maker-Button>
+      </div>
+    </Maker-Modal>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
-// import Modal from '../../components/Modal.vue';
 
 export default {
   name: 'ProjectCreate',
-  // components: { Modal },
   data() {
     return {
-      // Modal
+      showTipModal: true,
+
     };
   },
   methods: {
@@ -38,6 +41,12 @@ export default {
       } catch (error) {
         console.log('error', error);
       }
+    },
+    closeTipModal() {
+      this.showTipModal = false;
+    },
+    clickCoverBtn() {
+
     },
   }
 };

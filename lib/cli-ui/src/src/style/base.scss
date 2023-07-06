@@ -1,0 +1,10 @@
+.actions {
+  display: flex;
+  .m-button:not(:last-child){
+    margin-right: 12px;
+  }
+}
+
+.end {
+  justify-content: flex-end;
+}

@@ -14,9 +14,11 @@
     "vuex": "^3.6.2"
   },
   "devDependencies": {
+    "@akryum/md-icons-svg": "^1.0.1",
     "@babel/core": "^7.12.13",
     "@babel/eslint-parser": "^7.18.2",
     "@babel/preset-env": "^7.12.13",
+    "@vue/babel-preset-jsx": "^1.2.4",
     "babel-loader": "^8.2.2",
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^5.0.2",

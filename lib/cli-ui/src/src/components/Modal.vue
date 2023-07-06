@@ -18,6 +18,7 @@
       <div class="m-modal__footer">
         <slot name="footer" />
       </div>
+      <Maker-Button class="m-modal__close" icon-left="icon-close" @click="closeModal" />
     </div>
   </div>
 </template>
@@ -45,12 +46,14 @@ export default {
 
   },
   methods: {
-
+    closeModal() {
+      this.$emit('close');
+    }
   }
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .m-modal{
   position: fixed;
   top: 0;
@@ -80,6 +83,17 @@ export default {
         color: #2c3e50;
         font-size: 18px;
       }
+    }
+    .m-modal__body{
+      padding: 24px;
+    }
+    .m-modal__footer{
+      padding: 24px;
+    }
+    .m-modal__close{
+      position: absolute;
+      top: 20px;
+      right: 20px;
     }
   }
 }
