@@ -1,8 +1,16 @@
 <template>
   <div>
-    <button @click="createProject">
-      11
-    </button>
+    <div>
+      <button @click="aaa">
+        1
+      </button>
+      <Maker-Form-Field>
+        <Maker-Input
+          v-model="formData.projectName" placeholder="输入项目名" icon-left="icon-folder-close"
+          class="big app-name"
+        />
+      </Maker-Form-Field>
+    </div>
     <Maker-Modal v-show="showTipModal" title="提示" @close="closeTipModal">
       <div>目标文件已存在,是否覆盖文件</div>
       <div slot="footer" class="actions end">
@@ -20,11 +28,17 @@ export default {
   name: 'ProjectCreate',
   data() {
     return {
-      showTipModal: true,
+      formData: {
+        projectName: ''
+      },
+      showTipModal: false,
 
     };
   },
   methods: {
+    aaa() {
+      console.log(this.formData.projectName);
+    },
     async createProject() {
       const options = {
         features: ['vue', 'webpack', 'babel', 'router', 'vuex', 'linter'],

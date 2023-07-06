@@ -6,7 +6,7 @@
     <span class="m-button__content">
       <Maker-Icon
         v-if="iconLeft" class="m-button__icon m-button__icon-left"
-        :iconname="iconLeft"
+        :icon-name="iconLeft"
       ></Maker-Icon>
       <span class="m-button__default-slot">
         <slot>{{ label }}</slot>
@@ -19,7 +19,7 @@
       </div>
       <Maker-Icon
         v-if="iconRight" class="m-button__icon m-button__icon-right"
-        :iconname="iconRight"
+        :icon-name="iconRight"
       ></Maker-Icon>
     </span>
   </component>
