@@ -1,6 +1,6 @@
 <template>
   <div class="m-input" @click="focus">
-    <div class="m-input__content">
+    <div :class="['m-input__content',{focused}]">
       <Maker-Icon
         v-if="iconLeft" class="m-input__icon m-input__icon-left"
         :icon-name="iconLeft"
@@ -11,7 +11,8 @@
           :is="type === 'textarea' ? type : 'input'" ref="input" class="input"
           :type="type" :value.prop="valueModel" :placeholder="placeholder"
           v-bind="$attrs" v-on="$listeners"
-          @input="valueModel = $event.currentTarget.value"
+          @input="valueModel = $event.currentTarget.value" @focus="onInputFocus"
+          @blur="onInputBlur"
         />
         <input
           v-if="suggestion"
@@ -62,7 +63,9 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      focused: false
+    };
   },
   computed: {
     valueModel: {
@@ -71,6 +74,12 @@ export default {
     },
   },
   methods: {
+    onInputFocus() {
+      this.focused = true;
+    },
+    onInputBlur() {
+      this.focused = false;
+    },
     focus() {
       const inputRef = this.$refs.input;
       inputRef.focus();
@@ -85,14 +94,20 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 0 14px;
     border: 1px solid #e0f8ed;
     border-radius: 3px;
-    .input{
-      display: block;
-      height: 42px;
-      border: none;
-      outline: none;
+    .input-wrapper{
+      width: 100%;
+      .input{
+        display: block;
+        width: 100%;
+        height: 42px;
+        border: none;
+        outline: none;
+      }
     }
+
     .m-input__icon{
       width: 20px;
       height: 20px;
@@ -104,5 +119,6 @@ export default {
       }
     }
   }
+
 }
 </style>

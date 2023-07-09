@@ -9,6 +9,9 @@
 </script>
 
 <style>
+body{
+  margin: 0;
+}
 #app {
   font-family: Roboto,Avenir,Helvetica,Arial,sans-serif;
   -webkit-font-smoothing: antialiased;

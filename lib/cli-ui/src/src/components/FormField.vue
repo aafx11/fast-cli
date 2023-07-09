@@ -61,6 +61,9 @@ export default {
     .m-form-field__title{
 
     }
+    .m-form-field__content{
+      margin: 6px 0;
+    }
     .m-form-field__subtitle{
       font-size: 14px;
     }
