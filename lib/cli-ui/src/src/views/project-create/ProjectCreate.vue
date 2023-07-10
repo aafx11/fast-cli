@@ -2,10 +2,13 @@
   <div class="project-create">
     <Maker-Header title="创建新项目"></Maker-Header>
     <Maker-Tabs class="project-create__tabs" :active-name="activeName">
-      <Maker-Tabs-Pane label="详情" name="detail">
+      <Maker-Tabs-Pane label="详情" name="detail" icon="icon-xiangqingbeifen">
         <div>123</div>
       </Maker-Tabs-Pane>
-      <Maker-Tabs-Pane label="预设" name="preset">
+      <Maker-Tabs-Pane label="预设" name="preset" icon="icon-gou">
+        <div>789</div>
+      </Maker-Tabs-Pane>
+      <Maker-Tabs-Pane label="功能" name="feature" icon="icon-gongnenglan-xitonggongneng">
         <div>789</div>
       </Maker-Tabs-Pane>
     </Maker-Tabs>

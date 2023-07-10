@@ -2,7 +2,8 @@
   <div class="m-tabs">
     <div class="m-tabs__header">
       <div v-for="(item,index) in labelList" :key="index" class="m-tabs__item">
-        {{ item.label }}
+        <Maker-Icon class="m-tabs__icon" :icon-name="item.icon"></Maker-Icon>
+        <span>{{ item.label }}</span>
       </div>
     </div>
     <div class="m-tabs__content">
@@ -57,7 +58,13 @@ export default {
   width: 100%;
   background: #c8ebdf;
   .m-tabs__item{
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 0 18px;
+    .m-tabs__icon{
+      margin-right: 6px;
+    }
   }
 }
 </style>
