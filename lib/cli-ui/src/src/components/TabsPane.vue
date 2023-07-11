@@ -29,8 +29,6 @@ export default {
     };
   },
   mounted() {
-    console.log(this.activeName);
-    console.log(this.name);
   },
 };
 </script>

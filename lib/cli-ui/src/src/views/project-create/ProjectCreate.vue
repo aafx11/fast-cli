@@ -3,7 +3,23 @@
     <Maker-Header title="创建新项目"></Maker-Header>
     <Maker-Tabs class="project-create__tabs" :active-name="activeName">
       <Maker-Tabs-Pane label="详情" name="detail" icon="icon-xiangqingbeifen">
-        <div>123</div>
+        <div class="project-create__detail">
+          <Maker-Form-Field title="项目名">
+            <Maker-Input
+              v-model="formData.projectName" placeholder="输入项目名" icon-left="icon-folder-close"
+              class="big app-name"
+            />
+          </Maker-Form-Field>
+          <Maker-Form-Field title="包管理器">
+            <Maker-Select
+              v-model="formData.packageManager" :options="packageManagerOptions"
+              placeholder="输入项目名" icon-left="icon-folder-close" class="big app-name"
+            />
+          </Maker-Form-Field>
+          <button @click="aaa">
+            1
+          </button>
+        </div>
       </Maker-Tabs-Pane>
       <Maker-Tabs-Pane label="预设" name="preset" icon="icon-gou">
         <div>789</div>
@@ -12,22 +28,8 @@
         <div>789</div>
       </Maker-Tabs-Pane>
     </Maker-Tabs>
-    <div class="project-create__detail">
-      <Maker-Form-Field title="项目名">
-        <Maker-Input
-          v-model="formData.projectName" placeholder="输入项目名" icon-left="icon-folder-close"
-          class="big app-name"
-        />
-      </Maker-Form-Field>
-      <Maker-Form-Field title="包管理器">
-        <Maker-Select
-          v-model="formData.packageManager" :options="packageManagerOptions"
-          placeholder="输入项目名" icon-left="icon-folder-close" class="big app-name"
-        />
-      </Maker-Form-Field>
-      <button @click="aaa">
-        1
-      </button>
+    <div class="project-create__footer">
+      <Maker-Button>ddd</Maker-Button>
     </div>
     <Maker-Modal v-show="showTipModal" title="提示" @close="closeTipModal">
       <div>目标文件已存在,是否覆盖文件</div>
@@ -60,7 +62,7 @@ export default {
   },
   methods: {
     aaa() {
-      console.log(this.formData.projectName);
+      this.activeName = 'preset';
     },
     async createProject() {
       const options = {
@@ -93,18 +95,24 @@ export default {
 .project-create{
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   height: 100vh;
   overflow: hidden;
   .project-create__tabs{
-    width: 100%;
-  }
-  .project-create__detail{
     flex: 1;
     width: 100%;
-    max-width: 400px;
-    margin-top: 42px;
+    .project-create__detail{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      // align-items: center;
+      flex: 1;
+      width: 100%;
+      // max-width: 400px;
+      margin-top: 42px;
+    }
+  }
+  .project-create__footer{
+    padding: 16px;
   }
 }
 
