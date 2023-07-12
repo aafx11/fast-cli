@@ -31,8 +31,7 @@
 export default {
   provide() {
     return {
-      activeName: this.activeName,
-      showIndicator: false
+      activeName: () => this.activeName,
     };
   },
   props: {
@@ -43,6 +42,7 @@ export default {
   },
   data() {
     return {
+      showIndicator: false,
       labelList: [],
       indicatorStyle: {
         width: 0,
@@ -55,6 +55,7 @@ export default {
   watch: {
     activeName: {
       handler(value, oldValue) {
+        console.log('value', value);
         if (value !== oldValue) {
           this.updateIndicator();
         }

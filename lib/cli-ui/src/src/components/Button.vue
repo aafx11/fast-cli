@@ -1,7 +1,9 @@
 <template>
   <component
-    :is="component" :class="['m-button',`m-button-${type}`]" v-bind="$attrs"
-    @click.capture="handleClick" @click.capture.native="handleClick"
+    :is="component" :class="['m-button',`m-button-${type}`,`m-button-${size}`,{
+      'm-button-disabled':disabled
+    }]" v-bind="$attrs"
+    :disabled="disabled" @click.capture="handleClick" @click.capture.native="handleClick"
   >
     <span class="m-button__content">
       <Maker-Icon
@@ -28,6 +30,10 @@
 <script>
 export default {
   props: {
+    disabled: {
+      type: Boolean,
+      default: false
+    },
     iconLeft: {
       type: String,
       default: null,
@@ -55,6 +61,10 @@ export default {
     tag: {
       type: [Number, String],
       default: null,
+    },
+    size: {
+      type: String,
+      default: 'small'
     },
   },
   data() {
@@ -103,10 +113,18 @@ export default {
   user-select: none;
   box-sizing: border-box;
   border-radius: 3px;
-
+  &-large{
+    min-width: 190px;
+    height: 44px;
+    font-size: 16px;
+  }
+  &-disabled{
+    background-color: #42b883;
+    opacity: 0.5;
+  }
   &-default{
     color: #2c3e50;
-    background: 0 0;
+    background: #e0f8ed;
     &:hover{
       background: #e8faf2;
     }
@@ -114,7 +132,7 @@ export default {
   &-primary{
     color: #fff;
     background: #42b983;
-    &:hover{
+    &:hover:not(.m-button-disabled){
       background: #70cca2;
     }
   }
@@ -127,12 +145,15 @@ export default {
   }
   &__content{
     display: flex;
+    justify-content: center;
     align-items: center;
     .m-button__icon-left{
       margin-right: 6px;
     }
     .m-button__icon-right{
       margin-left: 6px;
+    }
+    .m-button__default-slot{
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="m-tabs-pane">
-    <dir v-show="activeName === name">
+    <dir v-show="activeName() === name" class="m-tabs-pane__content">
       <slot></slot>
     </dir>
   </div>
@@ -29,7 +29,7 @@ export default {
     };
   },
   mounted() {
-  },
+  }
 };
 </script>
 

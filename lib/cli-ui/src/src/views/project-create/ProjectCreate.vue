@@ -29,7 +29,23 @@
       </Maker-Tabs-Pane>
     </Maker-Tabs>
     <div class="project-create__footer">
-      <Maker-Button>ddd</Maker-Button>
+      <div class="project-create__footer-btn">
+        <Maker-Button v-show="activeName === 'detail'" size="large" icon-left="icon-close">
+          取消
+        </Maker-Button>
+        <Maker-Button
+          v-show="activeName !== 'detail'" size="large" icon-left="icon-close"
+          @click="clickBack"
+        >
+          上一步
+        </Maker-Button>
+        <Maker-Button
+          type="primary" size="large" icon-right="icon-direction-right"
+          :disabled="!formData.projectName" @click="clickNext"
+        >
+          下一步
+        </Maker-Button>
+      </div>
     </div>
     <Maker-Modal v-show="showTipModal" title="提示" @close="closeTipModal">
       <div>目标文件已存在,是否覆盖文件</div>
@@ -49,6 +65,7 @@ export default {
   data() {
     return {
       activeName: 'detail',
+      detailList: ['detail', 'preset', 'feature'],
       formData: {
         projectName: '',
         packageManager: null
@@ -87,6 +104,18 @@ export default {
     clickCoverBtn() {
 
     },
+    clickBack() {
+      const detailList = this.detailList;
+      this.activeName = detailList[detailList.findIndex((item) => item === this.activeName) - 1];
+    },
+    clickNext() {
+      if (this.activeName === 'detail') {
+        if (!this.formData.projectName) {
+          return;
+        }
+        this.activeName = 'preset';
+      }
+    },
   }
 };
 </script>
@@ -100,18 +129,22 @@ export default {
   .project-create__tabs{
     flex: 1;
     width: 100%;
-    .project-create__detail{
+    .m-tabs-pane__content{
       display: flex;
       flex-direction: column;
       justify-content: center;
-      // align-items: center;
-      flex: 1;
+      align-items: center;
+    }
+    .project-create__detail{
       width: 100%;
-      // max-width: 400px;
+      max-width: 400px;
       margin-top: 42px;
     }
   }
   .project-create__footer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 16px;
   }
 }
