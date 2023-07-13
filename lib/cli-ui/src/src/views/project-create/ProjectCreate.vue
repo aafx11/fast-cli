@@ -6,8 +6,8 @@
         <div class="project-create__detail">
           <Maker-Form-Field title="项目名">
             <Maker-Input
-              v-model="formData.projectName" placeholder="输入项目名" icon-left="icon-folder-close"
-              class="big app-name"
+              v-model="formData.projectName" class="big app-name" placeholder="输入项目名"
+              icon-left="icon-folder-close"
             />
           </Maker-Form-Field>
           <Maker-Form-Field title="包管理器">
@@ -16,13 +16,18 @@
               placeholder="输入项目名" icon-left="icon-folder-close" class="big app-name"
             />
           </Maker-Form-Field>
-          <button @click="aaa">
-            1
-          </button>
         </div>
       </Maker-Tabs-Pane>
       <Maker-Tabs-Pane label="预设" name="preset" icon="icon-gou">
-        <div>789</div>
+        <div class="project-create__detail" style="max-width: 1200px;">
+          <Maker-Radio
+            v-for="(item,index) in getPrompt('preset').choices" :key="index"
+            v-model="formData.preset" :label="item.value" @input="onRadioInput"
+          >
+            <div>{{ item.title }}</div>
+            <div>{{ item.desc }}</div>
+          </Maker-Radio>
+        </div>
       </Maker-Tabs-Pane>
       <Maker-Tabs-Pane label="功能" name="feature" icon="icon-gongnenglan-xitonggongneng">
         <div>789</div>
@@ -34,7 +39,7 @@
           取消
         </Maker-Button>
         <Maker-Button
-          v-show="activeName !== 'detail'" size="large" icon-left="icon-close"
+          v-show="activeName !== 'detail'" size="large" icon-left="icon-direction-left"
           @click="clickBack"
         >
           上一步
@@ -54,6 +59,8 @@
         <Maker-Button label="覆盖" type="danger" @click="clickCoverBtn"></Maker-Button>
       </div>
     </Maker-Modal>
+    <Maker-Modal v-show="showRemoteModal" title="配置远程预设" @close="closeRemoteModal">
+    </Maker-Modal>
   </div>
 </template>
 
@@ -66,9 +73,11 @@ export default {
     return {
       activeName: 'detail',
       detailList: ['detail', 'preset', 'feature'],
+      preset: [],
       formData: {
         projectName: '',
-        packageManager: null
+        packageManager: null,
+        preset: null
       },
       packageManagerOptions: [
         { label: 'npm', value: 'npm' },
@@ -77,10 +86,15 @@ export default {
       showTipModal: false,
     };
   },
+  computed: {
+    getPrompt() {
+      return (name) => this.preset.find((item) => item.name === name) || { choices: [] };
+    }
+  },
+  created() {
+    this.getPreset();
+  },
   methods: {
-    aaa() {
-      this.activeName = 'preset';
-    },
     async createProject() {
       const options = {
         features: ['vue', 'webpack', 'babel', 'router', 'vuex', 'linter'],
@@ -114,6 +128,33 @@ export default {
           return;
         }
         this.activeName = 'preset';
+      }
+    },
+    async getPreset() {
+      const { data: res } = await axios.get('/preset/getPreset');
+      console.log(res);
+      if (res.success) {
+        // eslint-disable-next-line no-control-regex
+        const regex = /\x1B\[33m(.*?)\x1B\[39m/;
+        res.data[0].choices.forEach((item) => {
+          const match = item.name.match(regex);
+          item.desc = match ? match[1] : '手动配置项目';
+          item.title = item.value === '__manual__' ? '手动' : item.value;
+        });
+        res.data[0].choices.push({
+          title: '远程预设',
+          desc: '从 git 仓库拉取预设',
+          value: 'remote'
+        });
+        this.preset = res.data;
+      }
+    },
+    closeRemoteModal() {
+      this.showRemoteModal = false;
+    },
+    onRadioInput(label) {
+      if (label === 'remote') {
+        this.showRemoteModal = true;
       }
     },
   }

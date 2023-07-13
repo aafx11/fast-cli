@@ -33,7 +33,7 @@
 <script>
 export default {
   model: {
-    prop: 'value', // 绑定的props属性，这里是'nameFromFather'
+    prop: 'value', // 绑定的props属性，这里是'value'
     event: 'update' // 触发父组件中v-model绑定的属性发生改变的方法，名称自取
   },
   props: {
