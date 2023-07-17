@@ -5,6 +5,10 @@
       <Maker-Tabs-Pane label="详情" name="detail" icon="icon-xiangqingbeifen">
         <div class="project-create__detail">
           <Maker-Form-Field title="项目名">
+            <input
+              id="file" type="file"
+              webkitdirectory @change="onChangeFile"
+            >
             <Maker-Input
               v-model="formData.projectName" class="big app-name" placeholder="输入项目名"
               icon-left="icon-folder-close"
@@ -34,19 +38,30 @@
       </Maker-Tabs-Pane>
     </Maker-Tabs>
     <div class="project-create__footer">
-      <div class="project-create__footer-btn">
-        <Maker-Button v-show="activeName === 'detail'" size="large" icon-left="icon-close">
+      <div v-show="activeName === 'detail'" class="project-create__footer-btn">
+        <Maker-Button size="large" icon-left="icon-close">
           取消
-        </Maker-Button>
-        <Maker-Button
-          v-show="activeName !== 'detail'" size="large" icon-left="icon-direction-left"
-          @click="clickBack"
-        >
-          上一步
         </Maker-Button>
         <Maker-Button
           type="primary" size="large" icon-right="icon-direction-right"
           :disabled="!formData.projectName" @click="clickNext"
+        >
+          下一步
+        </Maker-Button>
+      </div>
+      <div v-show="activeName === 'preset'">
+        <Maker-Button size="large" icon-left="icon-direction-left" @click="clickBack">
+          上一步
+        </Maker-Button>
+        <Maker-Button
+          v-show="!['__manual__','remote'].includes(formData.preset)" type="primary" size="large"
+          icon-right="icon-direction-right" :disabled="!formData.preset" @click="createProject"
+        >
+          创建项目
+        </Maker-Button>
+        <Maker-Button
+          v-show="['__manual__','remote'].includes(formData.preset)" type="primary" size="large"
+          icon-right="icon-direction-right" :disabled="!formData.preset" @click="clickNext"
         >
           下一步
         </Maker-Button>
@@ -84,6 +99,7 @@ export default {
         { label: 'yarn', value: 'yarn' },
       ],
       showTipModal: false,
+      showRemoteModal: false,
     };
   },
   computed: {
@@ -96,14 +112,15 @@ export default {
   },
   methods: {
     async createProject() {
-      const options = {
-        features: ['vue', 'webpack', 'babel', 'router', 'vuex', 'linter'],
-        historyMode: true,
-        eslintConfig: 'airbnb',
-        lintOn: ['save']
-      };
+      console.log('options', this.formData);
+      // const options = {
+      //   features: ['vue', 'webpack', 'babel', 'router', 'vuex', 'linter'],
+      //   historyMode: true,
+      //   eslintConfig: 'airbnb',
+      //   lintOn: ['save']
+      // };
       try {
-        const { data: res } = await axios.post('/project/createProject', { options, name: 'test' });
+        const { data: res } = await axios.post('/project/createProject', { options: this.formData });
         console.log('res', res);
         if (!res.success && res.code === 409) {
           return;
@@ -111,6 +128,9 @@ export default {
       } catch (error) {
         console.log('error', error);
       }
+    },
+    onChangeFile(e) {
+      console.log(e);
     },
     closeTipModal() {
       this.showTipModal = false;
@@ -124,11 +144,16 @@ export default {
     },
     clickNext() {
       if (this.activeName === 'detail') {
-        if (!this.formData.projectName) {
-          return;
-        }
         this.activeName = 'preset';
+        return;
       }
+
+      if (this.activeName === 'preset') {
+        console.log(this.formData.preset);
+      }
+    },
+    nextPage() {
+
     },
     async getPreset() {
       const { data: res } = await axios.get('/preset/getPreset');
