@@ -5,10 +5,6 @@
       <Maker-Tabs-Pane label="详情" name="detail" icon="icon-xiangqingbeifen">
         <div class="project-create__detail">
           <Maker-Form-Field title="项目名">
-            <input
-              id="file" type="file"
-              webkitdirectory @change="onChangeFile"
-            >
             <Maker-Input
               v-model="formData.projectName" class="big app-name" placeholder="输入项目名"
               icon-left="icon-folder-close"
@@ -35,6 +31,8 @@
       </Maker-Tabs-Pane>
       <Maker-Tabs-Pane label="功能" name="feature" icon="icon-gongnenglan-xitonggongneng">
         <div>789</div>
+      </Maker-Tabs-Pane>
+      <Maker-Tabs-Pane label="配置" name="setting" icon="icon-lvzhou_shebeipeizhi">
       </Maker-Tabs-Pane>
     </Maker-Tabs>
     <div class="project-create__footer">
@@ -76,6 +74,7 @@
     </Maker-Modal>
     <Maker-Modal v-show="showRemoteModal" title="配置远程预设" @close="closeRemoteModal">
     </Maker-Modal>
+    <Maker-Loading :show="showLoading" text="项目创建中..."></Maker-Loading>
   </div>
 </template>
 
@@ -87,7 +86,7 @@ export default {
   data() {
     return {
       activeName: 'detail',
-      detailList: ['detail', 'preset', 'feature'],
+      detailList: ['detail', 'preset', 'feature', 'setting'],
       preset: [],
       formData: {
         projectName: '',
@@ -100,6 +99,7 @@ export default {
       ],
       showTipModal: false,
       showRemoteModal: false,
+      showLoading: false,
     };
   },
   computed: {
@@ -112,6 +112,7 @@ export default {
   },
   methods: {
     async createProject() {
+      this.showLoading = true;
       console.log('options', this.formData);
       // const options = {
       //   features: ['vue', 'webpack', 'babel', 'router', 'vuex', 'linter'],
@@ -125,12 +126,15 @@ export default {
         if (!res.success && res.code === 409) {
           return;
         }
+        if (res.success) {
+          this.formData = this.$options.data.call(this).formData;
+          this.activeName = 'detail';
+          this.showLoading = false;
+        }
       } catch (error) {
         console.log('error', error);
+        this.showLoading = false;
       }
-    },
-    onChangeFile(e) {
-      console.log(e);
     },
     closeTipModal() {
       this.showTipModal = false;
@@ -149,6 +153,7 @@ export default {
       }
 
       if (this.activeName === 'preset') {
+        this.activeName = 'feature';
         console.log(this.formData.preset);
       }
     },
@@ -157,7 +162,7 @@ export default {
     },
     async getPreset() {
       const { data: res } = await axios.get('/preset/getPreset');
-      console.log(res);
+      console.log('getPreset', res);
       if (res.success) {
         // eslint-disable-next-line no-control-regex
         const regex = /\x1B\[33m(.*?)\x1B\[39m/;
