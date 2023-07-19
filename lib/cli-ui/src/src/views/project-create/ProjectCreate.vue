@@ -30,7 +30,26 @@
         </div>
       </Maker-Tabs-Pane>
       <Maker-Tabs-Pane label="功能" name="feature" icon="icon-gongnenglan-xitonggongneng">
-        <div>789</div>
+        <div class="project-create__detail" style="max-width: 1200px;">
+          <Maker-Switch
+            v-for="(item,index) in getPrompt('features').choices" :key="index"
+            v-model="item.checked"
+          >
+            <div>
+              <div>{{ item.name }}</div>
+              <div style="display: flex;">
+                <span>{{ item.description }}</span>
+                <a
+                  v-show="item.link" class="view-details" target="_blank"
+                  :href="item.link"
+                >
+                  <Maker-Icon icon-name="icon-fenxiang"></Maker-Icon>
+                  <span>查看详情</span>
+                </a>
+              </div>
+            </div>
+          </Maker-Switch>
+        </div>
       </Maker-Tabs-Pane>
       <Maker-Tabs-Pane label="配置" name="setting" icon="icon-lvzhou_shebeipeizhi">
       </Maker-Tabs-Pane>
@@ -42,26 +61,48 @@
         </Maker-Button>
         <Maker-Button
           type="primary" size="large" icon-right="icon-direction-right"
-          :disabled="!formData.projectName" @click="clickNext"
+          :disabled="!formData.projectName" @click="togglePage(1)"
         >
           下一步
         </Maker-Button>
       </div>
       <div v-show="activeName === 'preset'">
-        <Maker-Button size="large" icon-left="icon-direction-left" @click="clickBack">
+        <Maker-Button size="large" icon-left="icon-direction-left" @click="togglePage(-1)">
           上一步
         </Maker-Button>
         <Maker-Button
           v-show="!['__manual__','remote'].includes(formData.preset)" type="primary" size="large"
-          icon-right="icon-direction-right" :disabled="!formData.preset" @click="createProject"
+          icon-left="icon-select-bold" :disabled="!formData.preset" @click="createProject"
         >
           创建项目
         </Maker-Button>
         <Maker-Button
           v-show="['__manual__','remote'].includes(formData.preset)" type="primary" size="large"
-          icon-right="icon-direction-right" :disabled="!formData.preset" @click="clickNext"
+          icon-right="icon-direction-right" :disabled="!formData.preset" @click="togglePage(1)"
         >
           下一步
+        </Maker-Button>
+      </div>
+      <div v-show="activeName === 'feature'">
+        <Maker-Button size="large" icon-left="icon-direction-left" @click="togglePage(-1)">
+          上一步
+        </Maker-Button>
+        <Maker-Button
+          type="primary" size="large" icon-right="icon-direction-right"
+          @click="togglePage(1)"
+        >
+          下一步
+        </Maker-Button>
+      </div>
+      <div v-show="activeName === 'setting'">
+        <Maker-Button size="large" icon-left="icon-direction-left" @click="togglePage(-1)">
+          上一步
+        </Maker-Button>
+        <Maker-Button
+          type="primary" size="large" icon-left="icon-select-bold"
+          @click="createProject"
+        >
+          创建项目
         </Maker-Button>
       </div>
     </div>
@@ -91,7 +132,8 @@ export default {
       formData: {
         projectName: '',
         packageManager: null,
-        preset: null
+        preset: null,
+        features: []
       },
       packageManagerOptions: [
         { label: 'npm', value: 'npm' },
@@ -136,29 +178,33 @@ export default {
         this.showLoading = false;
       }
     },
+    async getSetting() {
+      const { data: res } = await axios.post('/preset/getSetting', { options: this.formData });
+      console.log(res);
+    },
     closeTipModal() {
       this.showTipModal = false;
     },
     clickCoverBtn() {
 
     },
-    clickBack() {
+    getFeatures() {
+      const features = [];
+      this.preset.find((item) => item.name === 'features').choices.forEach((ele) => {
+        if (ele.checked) {
+          features.push(ele.value);
+        }
+      });
+      console.log('features', features);
+      return features;
+    },
+    togglePage(step) {
       const detailList = this.detailList;
-      this.activeName = detailList[detailList.findIndex((item) => item === this.activeName) - 1];
-    },
-    clickNext() {
-      if (this.activeName === 'detail') {
-        this.activeName = 'preset';
-        return;
+      this.activeName = detailList[detailList.findIndex((item) => item === this.activeName) + step];
+      if (this.activeName === 'setting') {
+        this.formData.features = this.getFeatures();
+        this.getSetting();
       }
-
-      if (this.activeName === 'preset') {
-        this.activeName = 'feature';
-        console.log(this.formData.preset);
-      }
-    },
-    nextPage() {
-
     },
     async getPreset() {
       const { data: res } = await axios.get('/preset/getPreset');
@@ -210,6 +256,15 @@ export default {
       width: 100%;
       max-width: 400px;
       margin-top: 42px;
+      .view-details{
+        padding: 0 4px 0 2px;
+        color: #42b983;
+        cursor: pointer;
+        &:hover{
+          color: #fff;
+          background: #42b983;
+        }
+      }
     }
   }
   .project-create__footer{

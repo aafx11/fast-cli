@@ -50,6 +50,44 @@ export default {
 };
 </script>
 
-<style>
-
+<style lang="scss">
+.m-switch{
+  padding: 16px;
+  .m-switch__content{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .m-switch__wrapper{
+      width: 32px;
+      height: 16px;
+      margin-left: 8px;
+      border-radius: 8px;
+      background: #e0f8ed;
+      transition: background .3s;
+      position: relative;
+      padding: 1px;
+      box-sizing: border-box;
+      cursor: pointer;
+      .m-switch__bullet{
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: #2c3e50;
+        transition: margin-left .2s ease-in-out;
+      }
+    }
+  }
+  &:hover{
+    background: #f5fbf9;
+  }
+  &.selected{
+    background: rgba(66,185,131,.08);
+    .m-switch__wrapper{
+      background: #42b983;
+      .m-switch__bullet{
+        margin-left: 16px;
+      }
+    }
+  }
+}
 </style>
