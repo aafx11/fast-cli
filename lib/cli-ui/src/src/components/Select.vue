@@ -2,9 +2,9 @@
   <select class="m-select" :placeholder="placeholder">
     <option
       v-for="(item,index) in options" :key="index" class="m-select__option"
-      :value="item.value"
+      :value="item[valueKey]"
     >
-      {{ item.label }}
+      {{ item[labelKey] }}
     </option>
   </select>
 </template>
@@ -20,6 +20,14 @@ export default {
       type: String,
       default: undefined,
     },
+    labelKey: {
+      type: String,
+      default: 'label',
+    },
+    valueKey: {
+      type: String,
+      default: 'value',
+    }
   },
   data() {
     return {};

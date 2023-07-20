@@ -11,10 +11,7 @@
             />
           </Maker-Form-Field>
           <Maker-Form-Field title="包管理器">
-            <Maker-Select
-              v-model="formData.packageManager" :options="packageManagerOptions"
-              placeholder="输入项目名" icon-left="icon-folder-close" class="big app-name"
-            />
+            <Maker-Select v-model="formData.packageManager" :options="packageManagerOptions" />
           </Maker-Form-Field>
         </div>
       </Maker-Tabs-Pane>
@@ -31,27 +28,22 @@
       </Maker-Tabs-Pane>
       <Maker-Tabs-Pane label="功能" name="feature" icon="icon-gongnenglan-xitonggongneng">
         <div class="project-create__detail" style="max-width: 1200px;">
-          <Maker-Switch
-            v-for="(item,index) in getPrompt('features').choices" :key="index"
-            v-model="item.checked"
-          >
-            <div>
-              <div>{{ item.name }}</div>
-              <div style="display: flex;">
-                <span>{{ item.description }}</span>
-                <a
-                  v-show="item.link" class="view-details" target="_blank"
-                  :href="item.link"
-                >
-                  <Maker-Icon icon-name="icon-fenxiang"></Maker-Icon>
-                  <span>查看详情</span>
-                </a>
-              </div>
-            </div>
-          </Maker-Switch>
+          <Feature-Item
+            v-for="(item,index) in getPrompt('features').choices"
+            :key="index" :feature="item" @click.native="clickFeatureItem(item)"
+          ></Feature-Item>
         </div>
       </Maker-Tabs-Pane>
       <Maker-Tabs-Pane label="配置" name="setting" icon="icon-lvzhou_shebeipeizhi">
+        <div class="project-create__detail" style="max-width: 1200px;">
+          <!-- <button @click="getFeature">
+            feature
+          </button> -->
+          <component
+            :is="getComponent(item)" v-for="(item,index) in options" ref="feature"
+            :key="index" :feature="item" @click.native="clickFeatureItem(item)"
+          ></component>
+        </div>
       </Maker-Tabs-Pane>
     </Maker-Tabs>
     <div class="project-create__footer">
@@ -121,9 +113,17 @@
 
 <script>
 import axios from 'axios';
+import FeatureItem from './FeatureItem.vue';
+import FeatureSelect from './FeatureSelect.vue';
+import FeatureCheckbox from './FeatureCheckbox.vue';
 
 export default {
   name: 'ProjectCreate',
+  components: {
+    FeatureItem,
+    FeatureSelect,
+    FeatureCheckbox
+  },
   data() {
     return {
       activeName: 'detail',
@@ -135,6 +135,7 @@ export default {
         preset: null,
         features: []
       },
+      options: [],
       packageManagerOptions: [
         { label: 'npm', value: 'npm' },
         { label: 'yarn', value: 'yarn' },
@@ -147,12 +148,31 @@ export default {
   computed: {
     getPrompt() {
       return (name) => this.preset.find((item) => item.name === name) || { choices: [] };
-    }
+    },
+    getComponent() {
+      return (item) => {
+        const map = {
+          confirm: 'FeatureItem',
+          list: 'FeatureSelect',
+          checkbox: 'FeatureCheckbox'
+        };
+        return map[item.type];
+      };
+    },
   },
   created() {
     this.getPreset();
   },
   methods: {
+    getFeature() {
+      this.$refs.feature.forEach((instance) => {
+        console.log('instance', instance);
+        if (instance.getValue) {
+          console.log(instance.getValue());
+        }
+      });
+      console.log(this.$refs.feature);
+    },
     async createProject() {
       this.showLoading = true;
       console.log('options', this.formData);
@@ -180,13 +200,19 @@ export default {
     },
     async getSetting() {
       const { data: res } = await axios.post('/preset/getSetting', { options: this.formData });
-      console.log(res);
+      console.log('getSetting', res);
+      if (res.success) {
+        this.options = res.data;
+      }
     },
     closeTipModal() {
       this.showTipModal = false;
     },
     clickCoverBtn() {
 
+    },
+    clickFeatureItem(item) {
+      this.$set(item, 'checked', !item.checked);
     },
     getFeatures() {
       const features = [];
